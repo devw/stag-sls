@@ -7,6 +7,8 @@ provider:
   runtime: nodejs12.x
   profile: stagUser
   region: eu-west-3
+  environment: 
+    tableName:${self:custom.tableName}  
 
 plugins:
   - serverless-s3-sync
@@ -23,12 +25,21 @@ custom:
 
 functions:
   getUser:
-    handler: lambdas/getUser.handler
+    handler: lambdas/endpoints/getUser.handler
     events: 
       - http:
           path: get-users/{ID}
           method: GET
           cors: true 
+  getPlayerScore:
+    handler: lambdas/endpoints/getPlayerScore.handler
+    events: 
+      - http:
+          path: get-player-score/{ID}
+          method: GET
+          cors: true 
+
+
 
 resources:
   Resources:
