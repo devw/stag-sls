@@ -8,6 +8,14 @@ provider:
   profile: stagUser
   region: eu-west-3
 
+plugins:
+  - serverless-s3-sync
+
+custom:
+  s3Sync:
+    - bucketName: stag-2020
+      localDir: themes
+
 functions:
   hello:
     handler: handler.hello
@@ -17,4 +25,4 @@ resources:
     DemoBucketUpload:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: stag
+        BucketName: stag-2020

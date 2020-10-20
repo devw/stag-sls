@@ -1,0 +1,10 @@
+{
+  "name": "stag",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Antonio Pierro <antonio.pierro@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "serverless-s3-sync": "^1.15.0"
+  }
+}
