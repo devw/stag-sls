@@ -9,10 +9,12 @@ provider:
   region: eu-west-3
   environment: 
     tableName: ${self:custom.tableName}  
+    bucketName: ${self:custom.bucketName}
   iamRoleStatements:
     - Effect: Allow
       Action: 
         - dynamodb:*
+        - s3:*
       Resource: '*'
 
 plugins:
@@ -24,8 +26,9 @@ package:
 
 custom:
   tableName: player-points
+  bucketName: stag-2020
   s3Sync:
-    - bucketName: stag-2020
+    - bucketName: ${self:custom.bucketName}
       localDir: themes
 
 functions:
@@ -50,13 +53,20 @@ functions:
           path: create-player-score/{ID}
           method: POST
           cors: true
+  createFile:
+    handler: lambdas/endpoints/createFile.handler
+    events:
+      - http:
+          path: create-file/{fileName}
+          method: POST
+          cors: true
 
 resources:
   Resources:
     DemoBucketUpload:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: stag-2020
+        BucketName: ${self:custom.bucketName}
     DemoDynamoDbTable:
       Type: AWS::DynamoDB::Table
       Properties:
