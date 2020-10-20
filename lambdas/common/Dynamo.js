@@ -1,6 +1,7 @@
 const AWS = require("aws-sdk");
-const { AWS } = require("aws-sdk");
-const documentClient = new AWS.DynamoDB.documentClient();
+const documentClient = new AWS.DynamoDB.DocumentClient({
+    apiVersion: "2012-08-10",
+});
 
 const Dynamo = {
     async get(ID, TableName) {

@@ -1,4 +1,4 @@
-const Responses = require("./API-responses");
+const Responses = require("../common/API-responses");
 
 exports.handler = async (event) => {
     console.log(event, event);

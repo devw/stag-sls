@@ -8,7 +8,12 @@ provider:
   profile: stagUser
   region: eu-west-3
   environment: 
-    tableName:${self:custom.tableName}  
+    tableName: ${self:custom.tableName}  
+  iamRoleStatements:
+    - Effect: Allow
+      Action: 
+        - dynamodb:*
+      Resource: '*'
 
 plugins:
   - serverless-s3-sync
