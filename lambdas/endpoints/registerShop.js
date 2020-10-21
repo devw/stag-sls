@@ -15,7 +15,7 @@ exports.handler = async (event) => {
     const user = JSON.parse(event.body);
     user.ID = ID;
 
-    const newUser = await Dynamo.write(user, tableName).catch((err) => {
+    const newShop = await Dynamo.write(user, tableName).catch((err) => {
         console.log("Error in DynamoDB write ", err);
         return null;
     });
@@ -24,5 +24,5 @@ exports.handler = async (event) => {
         return Responses._400({ message: "failed to write user by Id" });
     }
 
-    return Responses._200({ newUser });
+    return Responses._200({ newShop });
 };

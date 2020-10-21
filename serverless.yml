@@ -25,7 +25,7 @@ package:
   individually: true
 
 custom:
-  tableName: player-points
+  tableName: stag
   bucketName: stag-2020
   s3Sync:
     - bucketName: ${self:custom.bucketName}
@@ -46,11 +46,11 @@ functions:
           path: get-player-score/{ID}
           method: GET
           cors: true 
-  createPlayerScore:
-    handler: lambdas/endpoints/createPlayerScore.handler
+  registerShop:
+    handler: lambdas/endpoints/registerShop.handler
     events:
       - http:
-          path: create-player-score/{ID}
+          path: register-shop/{ID}
           method: POST
           cors: true
   createFile:
