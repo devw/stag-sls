@@ -2,6 +2,10 @@ service: stag
 
 frameworkVersion: '2'
 
+custom:
+  tableName: stag
+  bucketName: stag-2020
+
 provider:
   name: aws
   runtime: nodejs12.x
@@ -13,19 +17,24 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action: 
-        - dynamodb:*
-        - s3:*
-      Resource: '*'
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - s3:PutObject
+        - se:GetObject
+      Resource: 
+        - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.tableName}
+        - arn:aws:s3:::${self:provider.environment.bucketName}
+    - Effect: Allow
+      Action: 
+        - dynamodb:Query
+      Resource: 
+        - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.tableName}/index/*
 
 plugins:
   - serverless-webpack
 
 package:
   individually: true
-
-custom:
-  tableName: stag
-  bucketName: stag-2020
 
 functions:
   registerShop:
