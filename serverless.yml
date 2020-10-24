@@ -17,17 +17,13 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action: 
+        - s3:PutObject
+        - s3:GetObject
+        - dynamodb:Query
         - dynamodb:PutItem
         - dynamodb:UpdateItem
-        - s3:PutObject
-        - se:GetObject
       Resource: 
-        - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.tableName}
-        - arn:aws:s3:::${self:provider.environment.bucketName}
-    - Effect: Allow
-      Action: 
-        - dynamodb:Query
-      Resource: 
+        - arn:aws:s3:::${self:provider.environment.bucketName}/*
         - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.tableName}/index/*
 
 plugins:

@@ -16,7 +16,7 @@ exports.handler = async (event) => {
     const data = JSON.parse(event.body);
 
     const newData = await S3.write(data, fileName, bucket).catch((err) => {
-        console.log("error in S3 write", err);
+        console.log("Error in S3 write", err);
         return null;
     });
 
