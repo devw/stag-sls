@@ -25,7 +25,6 @@ provider:
       Resource: 
         - arn:aws:s3:::${self:provider.environment.bucketName}/*
         - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.tableName}/index/*
-
 plugins:
   - serverless-webpack
 
@@ -40,11 +39,11 @@ functions:
           path: register-shop/{ID}
           method: POST
           cors: true
-  createFile:
-    handler: lambdas/endpoints/createFile.handler
+  upload:
+    handler: lambdas/endpoints/upload.handler
     events:
       - http:
-          path: create-file/{fileName}
+          path: upload
           method: POST
           cors: true
   getShop:
