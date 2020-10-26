@@ -3,11 +3,11 @@ const AWS = require("aws-sdk");
 const s3Client = new AWS.S3();
 
 const S3 = {
-    async get(fileName, bucket) {},
-    async write(data, fileName, bucket) {
+    async get(fileName, data, bucket) {},
+    async write(fileName, data, bucket) {
         const params = {
             Bucket: bucket,
-            Body: JSON.stringify(data),
+            Body: data,
             Key: fileName,
         };
 
