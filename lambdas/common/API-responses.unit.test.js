@@ -1,7 +1,7 @@
 const Responses = require("./API-responses");
 const { describe, test, expect } = require("@jest/globals");
 
-describe("API responses", () => {
+describe("API Response Test Suite", () => {
     test("Response is an object", () => {
         expect(typeof Responses).toBe("object");
     });

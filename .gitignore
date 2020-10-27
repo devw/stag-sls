@@ -6,5 +6,6 @@ jspm_packages
 .serverless
 
 themes
-.webpack/
+.webpack
 tests
+.dynamodb
