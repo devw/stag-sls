@@ -1,7 +1,7 @@
 module.exports = {
     tables: [
         {
-            TableName: `stag`,
+            TableName: process.env.validTableName,
             KeySchema: [{ AttributeName: "ID", KeyType: "HASH" }],
             AttributeDefinitions: [{ AttributeName: "ID", AttributeType: "S" }],
             ProvisionedThroughput: {
