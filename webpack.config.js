@@ -1,4 +1,7 @@
+const slsw = require("serverless-webpack");
+
 module.exports = {
     target: "node",
-    mode: "production",
+    mode: "none",
+    entry: slsw.lib.entries,
 };

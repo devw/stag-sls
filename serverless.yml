@@ -5,6 +5,15 @@ frameworkVersion: '2'
 custom:
   tableName: stag
   bucketName: stag-2020
+  dynamodb:
+    stages:
+      - dev
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+    migration:
+      dir: offline/migrations
 
 provider:
   name: aws
@@ -27,6 +36,8 @@ provider:
         - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.tableName}/index/*
 plugins:
   - serverless-webpack
+  - serverless-offline
+  - serverless-dynamodb-local
 
 package:
   individually: true
