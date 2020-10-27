@@ -20,7 +20,7 @@ describe("Dynamo Test Suite", () => {
             const res = await Dynamo.write(data, validTableName);
             expect(res).toBe(data);
         } catch (error) {
-            console.log("error in dynamo write test", error);
+            console.error("Error in dynamo write test", error);
         }
     });
 
