@@ -11,7 +11,7 @@ describe("Dynamo Test Suite", () => {
         expect(typeof Dynamo.write).toBe("function");
     });
 
-    const validTableName = "stag";
+    const { validTableName } = process.env;
     const data = { ID: "3.com", shop: "3.com" };
 
     test("Dynamo write works", async () => {
