@@ -1,7 +1,7 @@
 const Responses = require("../common/API-responses");
 const Dynamo = require("../common/Dynamo");
 
-const tableName = process.env.tableName;
+const { tableName } = process.env;
 
 exports.handler = async (event) => {
     if (!event.pathParameters.shop) {
@@ -16,6 +16,10 @@ exports.handler = async (event) => {
         queryKey: "shop",
         queryValue: shop,
     });
+
+    if (!shopData) {
+        return Responses._204({ message: "Failed to get shop by ID" });
+    }
 
     return Responses._200({ shopData });
 };

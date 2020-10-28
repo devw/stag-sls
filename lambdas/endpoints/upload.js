@@ -1,7 +1,6 @@
 const Responses = require("../common/API-Responses");
 const S3 = require("../common/S3");
-
-const bucket = process.env.bucketName;
+const { bucketName } = process.env;
 
 exports.handler = async (event) => {
     const { fName, data } = JSON.parse(event.body);
@@ -12,8 +11,8 @@ exports.handler = async (event) => {
         });
     }
 
-    const newData = await S3.write(fName, data, bucket).catch((err) => {
-        console.log("Error in S3 write", err);
+    const newData = await S3.write(fName, data, bucketName).catch((err) => {
+        console.error("Error in S3 write", err);
         return null;
     });
 

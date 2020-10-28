@@ -1,4 +1,4 @@
-process.env.validTableName = "stag";
+process.env.tableName = "asddasdas";
 
 module.exports = {
     verbose: true,

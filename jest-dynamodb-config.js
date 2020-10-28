@@ -1,7 +1,11 @@
 module.exports = {
     tables: [
         {
-            TableName: process.env.validTableName,
+            //     KeySchema:
+            //     - AttributeName: ID
+            //       KeyType: HASH
+            //   BillingMode: PAY_PER_REQUEST
+            TableName: process.env.tableName,
             KeySchema: [{ AttributeName: "ID", KeyType: "HASH" }],
             AttributeDefinitions: [{ AttributeName: "ID", AttributeType: "S" }],
             ProvisionedThroughput: {

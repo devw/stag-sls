@@ -1,7 +1,7 @@
 const Dynamo = require("./Dynamo");
 const { describe, test, expect } = require("@jest/globals");
 
-describe("Dynamo Test Suite", () => {
+describe("Dynamo Test Suite *** Unit Test ***", () => {
     test("Dynamo is an object", () => {
         expect(typeof Dynamo).toBe("object");
     });
@@ -11,13 +11,13 @@ describe("Dynamo Test Suite", () => {
         expect(typeof Dynamo.write).toBe("function");
     });
 
-    const { validTableName } = process.env;
+    const { tableName } = process.env;
     const data = { ID: "3.com", shop: "3.com" };
 
     test("Dynamo write works", async () => {
         expect.assertions(1);
         try {
-            const res = await Dynamo.write(data, validTableName);
+            const res = await Dynamo.write(data, tableName);
             expect(res).toBe(data);
         } catch (error) {
             console.error("Error in dynamo write test", error);
@@ -27,10 +27,10 @@ describe("Dynamo Test Suite", () => {
     test("dynamo get works", async () => {
         expect.assertions(1);
         try {
-            const res = await Dynamo.get(data.ID, validTableName);
+            const res = await Dynamo.get(data.ID, tableName);
             expect(res).toEqual(data);
         } catch (error) {
-            console.log("error in dynamo get", error);
+            console.error("Error in dynamo get", error);
         }
     });
 });

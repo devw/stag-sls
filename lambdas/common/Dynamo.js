@@ -32,7 +32,6 @@ const Dynamo = {
                 `there was an error fetching the data for ID of ${ID} from ${TableName}`
             );
         }
-        console.log(data);
         return data.Item;
     },
 
