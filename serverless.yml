@@ -43,11 +43,11 @@ package:
   individually: true
 
 functions:
-  registerShop:
-    handler: lambdas/endpoints/registerShop.handler
+  write:
+    handler: lambdas/endpoints/write-db.handler
     events:
       - http:
-          path: register-shop/{ID}
+          path: write-db/{PK}/{SK}
           method: POST
           cors: true
   upload:
@@ -57,38 +57,34 @@ functions:
           path: upload
           method: POST
           cors: true
-  getShop:
-    handler: lambdas/endpoints/getShop.handler
+  get:
+    handler: lambdas/endpoints/read-db.handler
     events:
       - http:
-          path: get-shop/{shop}
+          path: read-db/{PK}/{SK}
           method: GET
           cors: true
 
 resources:
   Resources:
-    DemoBucketUpload:
+    serviceBucket:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:custom.bucketName}
-    DemoDynamoDbTable:
+    serviceTable:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.tableName}
         AttributeDefinitions:
-          - AttributeName: ID
+          - AttributeName: PK
             AttributeType: S
-          - AttributeName: shop
+          - AttributeName: SK
             AttributeType: S
         KeySchema:
-          - AttributeName: ID
+          - AttributeName: PK
             KeyType: HASH
+          - AttributeName: SK
+            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
-        GlobalSecondaryIndexes:
-          - IndexName: shop-index
-            KeySchema:
-              - AttributeName: shop
-                KeyType: HASH
-            Projection:
-              ProjectionType: ALL
+
 

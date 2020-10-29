@@ -6,8 +6,14 @@ module.exports = {
             //       KeyType: HASH
             //   BillingMode: PAY_PER_REQUEST
             TableName: process.env.tableName,
-            KeySchema: [{ AttributeName: "ID", KeyType: "HASH" }],
-            AttributeDefinitions: [{ AttributeName: "ID", AttributeType: "S" }],
+            KeySchema: [
+                { AttributeName: "PK", KeyType: "HASH" },
+                { AttributeName: "SK", KeyType: "RANGE" },
+            ],
+            AttributeDefinitions: [
+                { AttributeName: "PK", AttributeType: "S" },
+                { AttributeName: "SK", AttributeType: "S" },
+            ],
             ProvisionedThroughput: {
                 ReadCapacityUnits: 1,
                 WriteCapacityUnits: 1,

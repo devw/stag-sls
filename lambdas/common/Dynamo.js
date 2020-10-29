@@ -17,11 +17,12 @@ if (process.env.JEST_WORKER_ID) {
 const documentClient = new AWS.DynamoDB.DocumentClient(options);
 
 const Dynamo = {
-    async get(ID, TableName) {
+    async get(PK, SK, TableName) {
         const params = {
             TableName,
             Key: {
-                ID,
+                PK,
+                SK,
             },
         };
 
@@ -29,16 +30,15 @@ const Dynamo = {
 
         if (!data || !data.Item) {
             throw Error(
-                `there was an error fetching the data for ID of ${ID} from ${TableName}`
+                `Error fetching the data for PK of ${PK} from ${TableName}`
             );
         }
         return data.Item;
     },
 
-    async write(data, TableName) {
-        if (!data.ID) {
-            throw Error("no ID on data");
-        }
+    async write(PK, SK, TableName, data = {}) {
+        data.PK = PK;
+        data.SK = SK;
 
         const params = {
             TableName,
@@ -49,19 +49,20 @@ const Dynamo = {
 
         if (!res) {
             throw Error(
-                `There was an error inserting ID of ${data.ID} in table ${TableName}`
+                `Error inserting ${JSON.stringify(data)} in table ${TableName}`
             );
         }
         return data;
     },
 
-    query: async ({ tableName, index, queryKey, queryValue }) => {
+    query: async ({ tableName, queryPK, querySK }) => {
+        console.log("##################", tableName, queryPK, querySK);
         const params = {
             TableName: tableName,
-            IndexName: index,
-            KeyConditionExpression: `${queryKey} = :hkey`,
+            KeyConditionExpression: `PK = :pk AND begins_with(SK, :sk)`,
             ExpressionAttributeValues: {
-                ":hkey": queryValue,
+                ":pk": queryPK,
+                ":sk": querySK,
             },
         };
 
