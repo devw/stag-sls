@@ -1,15 +1,20 @@
-module.exports = {
-    tables: [
-        {
-            TableName: process.env.validTableName,
-            KeySchema: [{ AttributeName: "ID", KeyType: "HASH" }],
-            AttributeDefinitions: [{ AttributeName: "ID", AttributeType: "S" }],
-            ProvisionedThroughput: {
-                ReadCapacityUnits: 1,
-                WriteCapacityUnits: 1,
-            },
-            BillingMode: "PAY_PER_REQUEST",
-        },
-        // etc
-    ],
+// Resolving DynamoDB setup dynamically from serverless.yml
+module.exports = async () => {
+    const serverless = new (require("serverless"))();
+    await serverless.init();
+    const service = await serverless.variables.populateService();
+    const resources = service.resources.Resources;
+    const tables = Object.keys(resources)
+        .map((name) => resources[name])
+        .filter((r) => r.Type === "AWS::DynamoDB::Table")
+        .map((r) => r.Properties);
+    const { tableName } = service.custom;
+    const { port } = service.custom.dynamodb.start;
+    process.env.tableName = tableName;
+    process.env.dynamoEndpoint = `http://localhost:${port}`;
+
+    return {
+        tables,
+        port: port,
+    };
 };
