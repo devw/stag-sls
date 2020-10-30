@@ -30,7 +30,7 @@ const Dynamo = {
 
         if (!data || !data.Item) {
             throw Error(
-                `Error fetching the data for PK of ${PK} from ${TableName}`
+                `Error fetching data for ${PK}/${PK} from ${TableName}`
             );
         }
         return data.Item;
