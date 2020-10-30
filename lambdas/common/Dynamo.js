@@ -1,17 +1,9 @@
 const AWS = require("aws-sdk");
-const { dynamoEndpoint } = process.env;
 let options = {};
-if (process.env.IS_OFFLINE) {
+if (process.env.IS_OFFLINE || process.env.JEST_WORKER_ID) {
     options = {
-        region: "localhost",
-        endpoint: dynamoEndpoint,
-    };
-}
-if (process.env.JEST_WORKER_ID) {
-    options = {
-        endpoint: dynamoEndpoint,
+        endpoint: `http://localhost:${process.env.dynamoPort}`,
         region: "local-env",
-        sslEnabled: false,
     };
 }
 const documentClient = new AWS.DynamoDB.DocumentClient(options);

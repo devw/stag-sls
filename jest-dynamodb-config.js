@@ -11,7 +11,7 @@ module.exports = async () => {
     const { tableName } = service.custom;
     const { port } = service.custom.dynamodb.start;
     process.env.tableName = tableName;
-    process.env.dynamoEndpoint = `http://localhost:${port}`;
+    process.env.dynamoPort = port;
 
     return {
         tables,

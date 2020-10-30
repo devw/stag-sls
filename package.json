@@ -5,7 +5,7 @@
   "author": "Antonio Pierro <antonio.pierro@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "sls offline start --httpPort 3001",
+    "start": "sls offline start",
     "test": "jest"
   },
   "devDependencies": {

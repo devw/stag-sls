@@ -14,6 +14,8 @@ custom:
       migrate: true
     migration:
       dir: offline/migrations
+  serverless-offline:
+    httpPort: 3001
 
 provider:
   name: aws
@@ -23,6 +25,7 @@ provider:
   environment: 
     tableName: ${self:custom.tableName}  
     bucketName: ${self:custom.bucketName}
+    dynamoPort: ${self:custom.dynamodb.start.port}
   iamRoleStatements:
     - Effect: Allow
       Action: 
