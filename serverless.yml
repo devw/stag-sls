@@ -3,8 +3,8 @@ service: stag
 frameworkVersion: '2'
 
 custom:
-  tableName: stag
-  bucketName: stag-2020
+  tableName: stag-table
+  bucketName: stag-bucket
   dynamodb:
     stages:
       - dev

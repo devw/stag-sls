@@ -1,15 +1,15 @@
 const AWS = require("aws-sdk");
-
+const { dynamoEndpoint } = process.env;
 let options = {};
 if (process.env.IS_OFFLINE) {
     options = {
         region: "localhost",
-        endpoint: "http://localhost:8000",
+        endpoint: dynamoEndpoint,
     };
 }
 if (process.env.JEST_WORKER_ID) {
     options = {
-        endpoint: "http://localhost:8000",
+        endpoint: dynamoEndpoint,
         region: "local-env",
         sslEnabled: false,
     };
@@ -56,7 +56,6 @@ const Dynamo = {
     },
 
     query: async ({ tableName, queryPK, querySK }) => {
-        console.log("##################", tableName, queryPK, querySK);
         const params = {
             TableName: tableName,
             KeyConditionExpression: `PK = :pk AND begins_with(SK, :sk)`,
