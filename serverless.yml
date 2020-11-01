@@ -50,8 +50,15 @@ functions:
     handler: lambdas/endpoints/write-db.handler
     events:
       - http:
-          path: write-db/{PK}/{SK}
+          path: /{PK}/{SK}
           method: POST
+          cors: true
+  get:
+    handler: lambdas/endpoints/read-db.handler
+    events:
+      - http:
+          path: /{PK}/{SK?}
+          method: GET
           cors: true
   upload:
     handler: lambdas/endpoints/upload.handler
@@ -59,13 +66,6 @@ functions:
       - http:
           path: upload
           method: POST
-          cors: true
-  get:
-    handler: lambdas/endpoints/read-db.handler
-    events:
-      - http:
-          path: read-db/{PK}/{SK}
-          method: GET
           cors: true
 
 resources:

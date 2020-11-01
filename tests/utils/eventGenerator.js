@@ -3,7 +3,7 @@ const APIGatewayRequest = ({
     method,
     path = "",
     queryStringObject,
-    pathParametersObject,
+    pathParametersObject = {},
     stageVariables = null,
 }) => {
     const request = {
