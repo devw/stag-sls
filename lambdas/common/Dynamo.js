@@ -28,35 +28,31 @@ const Dynamo = {
         return data.Item;
     },
 
-    async write(PK, SK, TableName, data = {}) {
-        data.PK = PK;
-        data.SK = SK;
-
+    async write(PK, SK, tableName, body = {}) {
         const params = {
-            TableName,
-            Item: data,
+            TableName: tableName,
+            Item: {
+                PK: PK,
+                SK: SK,
+                ...body,
+            },
         };
-
-        const res = await documentClient.put(params).promise();
-
-        if (!res) {
-            throw Error(
-                `Error inserting ${JSON.stringify(data)} in table ${TableName}`
-            );
-        }
-        return data;
+        const isOk = await documentClient.put(params).promise();
+        return isOk ? isOk : Error(`Error inserting data`);
     },
 
     query: async ({ tableName, queryPK, querySK }) => {
         const params = {
             TableName: tableName,
-            KeyConditionExpression: `PK = :pk AND begins_with(SK, :sk)`,
+            KeyConditionExpression: `PK = :pk`,
             ExpressionAttributeValues: {
                 ":pk": queryPK,
-                ":sk": querySK,
             },
         };
-
+        if (querySK) {
+            params.KeyConditionExpression = `PK = :pk AND begins_with(SK, :sk)`;
+            params.ExpressionAttributeValues[":sk"] = querySK;
+        }
         const res = await documentClient.query(params).promise();
 
         return res.Items || [];
