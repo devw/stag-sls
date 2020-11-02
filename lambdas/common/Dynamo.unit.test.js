@@ -22,7 +22,7 @@ describe("Dynamo Test Suite *** Unit Test ***", () => {
     test("dynamo get works", async () => {
         const [PK, SK] = ["shop", "2.fr"];
         expect.assertions(1);
-        await Dynamo.get(PK, SK)
+        await Dynamo.get({ PK, SK })
             .then((res) => expect(res).toEqual({ PK: PK, SK: SK }))
             .catch((err) => `Error in dynamo read test, ${err}`);
     });
