@@ -9,8 +9,7 @@ exports.handler = async (event) => {
         });
 
     const body = JSON.parse(event.body);
-    const { tableName } = process.env;
-    const isOK = await Dynamo.write(PK, SK, tableName, body).catch((err) => {
+    const isOK = await Dynamo.write(PK, SK, body).catch((err) => {
         console.error("Error in DynamoDB write \n", PK, SK, err);
         return null;
     });

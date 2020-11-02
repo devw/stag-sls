@@ -46,7 +46,7 @@ describe("Read DB *** Integration Tests ***", () => {
             pathParametersObject: pathPO,
             body: body,
         };
-        await Dynamo.write(pathPO.PK, pathPO.SK, process.env.tableName, body);
+        await Dynamo.write(pathPO.PK, pathPO.SK, body);
         const event = eventGenerator(eventPar);
         const res = await read.handler(event);
         const bodyRes = JSON.parse(res.body)[0];

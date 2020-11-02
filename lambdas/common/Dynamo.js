@@ -1,4 +1,5 @@
 const AWS = require("aws-sdk");
+const TableName = process.env.tableName;
 let options = {};
 if (process.env.IS_OFFLINE || process.env.JEST_WORKER_ID) {
     options = {
@@ -9,52 +10,31 @@ if (process.env.IS_OFFLINE || process.env.JEST_WORKER_ID) {
 const documentClient = new AWS.DynamoDB.DocumentClient(options);
 
 const Dynamo = {
-    async get(PK, SK, TableName) {
-        const params = {
-            TableName,
-            Key: {
-                PK,
-                SK,
-            },
-        };
-
-        const data = await documentClient.get(params).promise();
-
-        if (!data || !data.Item) {
-            throw Error(
-                `Error fetching data for ${PK}/${PK} from ${TableName}`
-            );
-        }
-        return data.Item;
+    async get(PK, SK) {
+        const params = { TableName, Key: { PK, SK } };
+        const res = await documentClient.get(params).promise();
+        return res?.Item ? res.Item : Error(`Error fetching data`);
     },
 
-    async write(PK, SK, tableName, body = {}) {
-        const params = {
-            TableName: tableName,
-            Item: {
-                PK: PK,
-                SK: SK,
-                ...body,
-            },
-        };
+    async write(PK, SK, body = {}) {
+        const params = { TableName, Item: { PK, SK, ...body } };
         const isOk = await documentClient.put(params).promise();
         return isOk ? isOk : Error(`Error inserting data`);
     },
 
-    query: async ({ tableName, queryPK, querySK }) => {
+    query: async ({ PK, SK }) => {
         const params = {
-            TableName: tableName,
+            TableName,
             KeyConditionExpression: `PK = :pk`,
             ExpressionAttributeValues: {
-                ":pk": queryPK,
+                ":pk": PK,
             },
         };
-        if (querySK) {
+        if (SK) {
             params.KeyConditionExpression = `PK = :pk AND begins_with(SK, :sk)`;
-            params.ExpressionAttributeValues[":sk"] = querySK;
+            params.ExpressionAttributeValues[":sk"] = SK;
         }
         const res = await documentClient.query(params).promise();
-
         return res.Items || [];
     },
 };
