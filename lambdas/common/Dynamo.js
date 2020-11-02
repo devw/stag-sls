@@ -37,15 +37,8 @@ const Dynamo = {
                 ...body,
             },
         };
-
-        const res = await documentClient.put(params).promise();
-
-        if (!res) {
-            throw Error(
-                `Error inserting ${JSON.stringify(body)} in table ${tableName}`
-            );
-        }
-        return res;
+        const isOk = await documentClient.put(params).promise();
+        return isOk ? isOk : Error(`Error inserting data`);
     },
 
     query: async ({ tableName, queryPK, querySK }) => {

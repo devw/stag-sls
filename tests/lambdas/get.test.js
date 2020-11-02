@@ -8,9 +8,7 @@ describe("Read DB *** Integration Tests ***", () => {
     test("It should take an PK and return an API Gateway response", async () => {
         const pathPO = { PK: "shop", SK: "1.fr" };
         const event = eventGenerator({ pathParametersObject: pathPO });
-
         const res = await read.handler(event);
-
         expect(res).toBeDefined();
         expect(validators.isApiGatewayResponse(res)).toBe(true);
     });
@@ -51,9 +49,9 @@ describe("Read DB *** Integration Tests ***", () => {
         await Dynamo.write(pathPO.PK, pathPO.SK, process.env.tableName, body);
         const event = eventGenerator(eventPar);
         const res = await read.handler(event);
-        const bodyResp = JSON.parse(res.body)[0];
+        const bodyRes = JSON.parse(res.body)[0];
 
         expect(res.statusCode).toBe(200);
-        expect(bodyResp.accessToke).toBe(body.accessToke);
+        expect(bodyRes.accessToke).toBe(body.accessToke);
     });
 });
