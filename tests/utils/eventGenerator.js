@@ -1,8 +1,8 @@
 const APIGatewayRequest = ({
-    body,
-    method,
-    path = "",
-    queryStringObject,
+    body = undefined,
+    method = undefined,
+    path = undefined,
+    queryStringObject = {},
     pathParametersObject = {},
     stageVariables = null,
 }) => {
