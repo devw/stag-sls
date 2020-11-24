@@ -2,15 +2,13 @@ const Responses = require("../common/API-responses");
 const Dynamo = require("../common/Dynamo");
 
 exports.handler = async (event) => {
-    const { PK, SK } = event.pathParameters;
-    if (!PK) return Responses._400({ message: "missing PK" });
-    const response = SK
-        ? await Dynamo.get({ PK, SK }) // TODO fix Dynamo.get
-        : await Dynamo.query(PK);
+    let response;
 
-    if (!response) {
-        return Responses._204({ message: "Failed to get shop by PK" });
-    }
+    if (event.pathParameters)
+        response = await Dynamo.get(event.pathParameters.PK);
+    else response = await Dynamo.scan();
+
+    if (!response) return Responses._204("Failed to get shop by PK");
 
     return Responses._200(response);
 };

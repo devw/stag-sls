@@ -3,22 +3,19 @@ const S3 = require("../common/S3");
 const { bucketName } = process.env;
 
 exports.handler = async (event) => {
-    const { fName, data } = JSON.parse(event.body);
+    const { fName } = event.pathParameters;
+    if (!fName) return Responses._400({ message: "missing fName" });
 
-    if (!fName) {
-        return Responses._400({
-            message: `Missing fName key from: ${JSON.stringify(event)} `,
-        });
-    }
+    const { body } = event;
 
-    const newData = await S3.write(fName, data, bucketName).catch((err) => {
+    const data = await S3.write(fName, body, bucketName).catch((err) => {
         console.error("Error in S3 write", err);
         return null;
     });
 
-    if (!newData) {
+    if (!data) {
         return Responses._400({ message: `Failed to write data on ${fName}` });
     }
 
-    return Responses._200({ newData });
+    return Responses._200(data);
 };
