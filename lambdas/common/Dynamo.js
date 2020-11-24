@@ -11,7 +11,7 @@ const Dynamo = {
     async get({ PK, SK }) {
         const params = { TableName, Key: { PK, SK } };
         const res = await documentClient.get(params).promise();
-        return res?.Item ? res.Item : Error(`Error fetching data`);
+        return res.Item ? res.Item : Error(`Error fetching data`);
     },
 
     async write(PK, SK, body = {}) {
