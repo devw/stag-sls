@@ -3,8 +3,8 @@ service: stag
 frameworkVersion: '2'
 
 custom:
-  tableName: stag-table
-  bucketName: stag-bucket
+  tableName: shopify-info-table
+  bucketName: popup-config-bucket
   dynamodb:
     stages:
       - dev
@@ -51,30 +51,37 @@ functions:
     handler: lambdas/endpoints/write-db.handler
     events:
       - http:
-          path: /{PK}/{SK}
+          path: ddb/{PK}/{SK}
           method: POST
           cors: true
   get:
     handler: lambdas/endpoints/read-db.handler
     events:
       - http:
-          path: /{PK}/{SK}
+          path: ddb/{PK}/{SK}
           method: GET
           cors: true
-  upload:
-    handler: lambdas/endpoints/upload.handler
+  writeS3:
+    handler: lambdas/endpoints/write-s3.handler
     events:
       - http:
-          path: upload
+          path: s3
           method: POST
+          cors: true
+  getS3:
+    handler: lambdas/endpoints/read-s3.handler
+    events:
+      - http:
+          path: s3/{fName}
+          method: GET
           cors: true
 
 resources:
   Resources:
-    # serviceBucket:
-    #   Type: AWS::S3::Bucket
-    #   Properties:
-    #     BucketName: ${self:custom.bucketName}
+    serviceBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.bucketName}
     serviceTable:
       Type: AWS::DynamoDB::Table
       Properties:
