@@ -6,9 +6,9 @@ exports.handler = async (event) => {
     const { fName } = event.pathParameters;
 
     if (!fName) {
-        return Responses._400({
-            message: `Missing fName key from: ${JSON.stringify(event)} `,
-        });
+        return Responses._400(
+            `Missing fName key from: ${JSON.stringify(event)} `
+        );
     }
 
     const data = await S3.get(fName, bucketName).catch((err) => {
@@ -16,9 +16,7 @@ exports.handler = async (event) => {
         return null;
     });
 
-    if (!data) {
-        return Responses._400({ message: `Failed to read data by ${fName}` });
-    }
+    if (!data) return Responses._400(`Failed to read data by ${fName}`);
 
     return Responses._200(JSON.parse(data));
 };
