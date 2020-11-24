@@ -34,9 +34,10 @@ provider:
         - dynamodb:Query
         - dynamodb:PutItem
         - dynamodb:UpdateItem
+        - dynamodb:GetItem
       Resource: 
         - arn:aws:s3:::${self:provider.environment.bucketName}/*
-        - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.tableName}/index/*
+        - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.tableName}
 plugins:
   - serverless-webpack
   - serverless-offline
@@ -57,7 +58,7 @@ functions:
     handler: lambdas/endpoints/read-db.handler
     events:
       - http:
-          path: /{PK}/{SK?}
+          path: /{PK}/{SK}
           method: GET
           cors: true
   upload:
@@ -70,10 +71,10 @@ functions:
 
 resources:
   Resources:
-    serviceBucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: ${self:custom.bucketName}
+    # serviceBucket:
+    #   Type: AWS::S3::Bucket
+    #   Properties:
+    #     BucketName: ${self:custom.bucketName}
     serviceTable:
       Type: AWS::DynamoDB::Table
       Properties:

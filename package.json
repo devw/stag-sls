@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "start": "sls offline start",
-    "test": "jest"
+    "test": "jest",
+    "deploy": "sls deploy"
   },
   "devDependencies": {
     "@shelf/jest-dynamodb": "^1.7.0",
