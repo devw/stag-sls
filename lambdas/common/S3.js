@@ -15,22 +15,24 @@ const S3 = {
             throw Error(`Failed to get file ${fileName}, from ${bucket}`);
         }
 
+        console.log("asasssassa-------", data.Body.toString("utf8"));
+
         return JSON.parse(await data.Body.toString());
     },
-    async write(fileName, data, bucket) {
+    async write(fileName, body, bucket) {
         const params = {
             Bucket: bucket,
-            Body: JSON.stringify(data),
+            Body: JSON.stringify(body),
             Key: fileName,
         };
 
-        const newData = await s3Client.putObject(params).promise();
+        const data = await s3Client.putObject(params).promise();
 
-        if (!newData) {
+        if (!data) {
             throw Error("there was an error writing the file");
         }
 
-        return newData;
+        return data;
     },
 };
 

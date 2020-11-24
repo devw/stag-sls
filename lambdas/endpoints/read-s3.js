@@ -11,14 +11,14 @@ exports.handler = async (event) => {
         });
     }
 
-    const newData = await S3.get(fName, bucketName).catch((err) => {
+    const data = await S3.get(fName, bucketName).catch((err) => {
         console.error("Error in S3 get", err);
         return null;
     });
 
-    if (!newData) {
+    if (!data) {
         return Responses._400({ message: `Failed to read data by ${fName}` });
     }
 
-    return Responses._200({ newData });
+    return Responses._200(JSON.parse(data));
 };

@@ -3,7 +3,7 @@ service: stag
 frameworkVersion: '2'
 
 custom:
-  tableName: shopify-info-table
+  tableName: shopify-data-table
   bucketName: popup-config-bucket
   dynamodb:
     stages:
@@ -55,6 +55,7 @@ functions:
           path: /ddb/{PK}
           method: POST
           cors: true
+
   get:
     handler: lambdas/endpoints/read-db.handler
     events:
@@ -71,9 +72,10 @@ functions:
     handler: lambdas/endpoints/write-s3.handler
     events:
       - http:
-          path: s3
+          path: s3/{fName}
           method: POST
           cors: true
+
   getS3:
     handler: lambdas/endpoints/read-s3.handler
     events:
