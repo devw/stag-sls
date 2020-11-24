@@ -40,18 +40,18 @@ describe("Read DB *** Integration Tests ***", () => {
     test("It should returns 200 and the data when PK and SK are valid", async () => {
         const pathPO = { PK: "shop", SK: "1.fr" };
         const body = {
-            accessToke: "random",
+            accessToken: "random",
         };
         const eventPar = {
             pathParametersObject: pathPO,
             body: body,
         };
-        await Dynamo.write(pathPO.PK, pathPO.SK, process.env.tableName, body);
+        await Dynamo.write(pathPO.PK, pathPO.SK, body);
         const event = eventGenerator(eventPar);
         const res = await read.handler(event);
-        const bodyRes = JSON.parse(res.body)[0];
+        const bodyRes = JSON.parse(res.body);
 
         expect(res.statusCode).toBe(200);
-        expect(bodyRes.accessToke).toBe(body.accessToke);
+        expect(bodyRes.accessToken).toBe(body.accessToken);
     });
 });
