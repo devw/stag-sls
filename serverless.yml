@@ -36,6 +36,7 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:GetItem
         - dynamodb:Scan
+        - dynamodb:DeleteItem
       Resource: 
         - arn:aws:s3:::${self:provider.environment.bucketName}/*
         - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.tableName}

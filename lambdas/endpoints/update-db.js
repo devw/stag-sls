@@ -9,12 +9,12 @@ exports.handler = async (event) => {
 
     if (!PK) return Responses._400({ message: "missing PK" });
 
-    const isOK = await Dynamo.update(PK, paramName, paramValue).catch((err) => {
+    const resp = await Dynamo.update(PK, paramName, paramValue).catch((err) => {
         console.error("Error in DynamoDB update \n", PK, err);
         return null;
     });
 
-    return isOK
-        ? Responses._200({ message: isOK })
+    return resp
+        ? Responses._200(resp)
         : Responses._400({ message: "Failed updating Dynamo" });
 };

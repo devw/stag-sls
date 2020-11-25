@@ -21,11 +21,6 @@ const Dynamo = {
     },
 
     async update(PK, paramsName, paramsValue) {
-        console.log(
-            "--------------------------------",
-            paramsName,
-            paramsValue
-        );
         const params = {
             TableName,
             Key: { PK },

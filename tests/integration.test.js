@@ -2,13 +2,14 @@ const { describe, test, expect, beforeAll } = require("@jest/globals");
 const fetch = require("node-fetch");
 require("dotenv").config();
 
-describe("Reading-DB *** Integration Test ***", () => {
+describe("Dynamo DB Integration Test ***", () => {
     beforeAll(async () => {
         this.body = { a: 1, b: 2 };
         this.fName = "test.json";
         this.ddbPK = "shop.com";
+        this.update = { paramName: "a", paramValue: 2 };
     });
-    test("It should write an item on DDB", async () => {
+    test.only("It should write an item on DDB", async () => {
         const { AWS_EP } = process.env;
         const promise = await fetch(`${AWS_EP}/dev/ddb/${this.ddbPK}`, {
             method: "POST",
@@ -29,7 +30,16 @@ describe("Reading-DB *** Integration Test ***", () => {
         const response = await promise.json();
         expect(response).toMatchObject(this.body);
     });
-    test("It should delete an entry from DDB", async () => {
+    test("It should update an item on DDB", async () => {
+        const { AWS_EP } = process.env;
+        const promise = await fetch(`${AWS_EP}/dev/ddb/${this.ddbPK}`, {
+            method: "PUT",
+            body: JSON.stringify(this.update),
+        });
+        const response = await promise.json();
+        expect(response["a"]).toBe(this.update["paramValue"]); // TODO refactor this test
+    });
+    test.only("It should delete an entry from DDB", async () => {
         const { AWS_EP } = process.env;
         const promise = await fetch(`${AWS_EP}/dev/ddb/${this.ddbPK}`, {
             method: "DELETE",
@@ -37,6 +47,9 @@ describe("Reading-DB *** Integration Test ***", () => {
         const response = await promise.json();
         expect(response).toMatchObject({});
     });
+});
+
+describe("S3 Integration Test ***", () => {
     test("It should write a file on S3", async () => {
         const { AWS_EP } = process.env;
         const promise = await fetch(`${AWS_EP}/dev/s3/${this.fName}`, {
@@ -54,7 +67,7 @@ describe("Reading-DB *** Integration Test ***", () => {
     });
 });
 
-describe("Writing configuration file in json format", () => {
+describe("Writing configuration file in json format test", () => {
     beforeAll(async () => {});
     test("It should get and write the configuration file into S3", async () => {
         const shopName = "stag01.myshopify.com";
