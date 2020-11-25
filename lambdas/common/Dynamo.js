@@ -20,12 +20,39 @@ const Dynamo = {
         return isOk ? isOk : Error(`Error inserting data`);
     },
 
+    async update(PK, paramsName, paramsValue) {
+        console.log(
+            "--------------------------------",
+            paramsName,
+            paramsValue
+        );
+        const params = {
+            TableName,
+            Key: { PK },
+            ConditionExpression: "attribute_exists(PK)",
+            UpdateExpression: "set " + paramsName + " = :v",
+            ExpressionAttributeValues: {
+                ":v": paramsValue,
+            },
+            ReturnValues: "ALL_NEW",
+        };
+
+        const resp = await documentClient.update(params).promise();
+        return resp.Attributes;
+    },
+
     async query(PK) {
         const params = { TableName };
         params.KeyConditionExpression = `PK = :pk`;
         params.ExpressionAttributeValues = { ":pk": PK };
         const res = await documentClient.query(params).promise();
         return res.Items || [];
+    },
+
+    async delete(PK) {
+        const params = { TableName, Key: { PK } };
+        const r = await documentClient.delete(params).promise();
+        return r;
     },
 
     async scan() {

@@ -68,6 +68,22 @@ functions:
           method: GET
           cors: true
 
+  delete-item-db:
+    handler: lambdas/endpoints/delete-db.handler
+    events:
+      - http:
+          path: /ddb/{PK}
+          method: DELETE
+          cors: true
+
+  update-item-db:
+    handler: lambdas/endpoints/update-db.handler
+    events:
+      - http:
+          path: /ddb/{PK}
+          method: PUT
+          cors: true
+
   writeS3:
     handler: lambdas/endpoints/write-s3.handler
     events:
