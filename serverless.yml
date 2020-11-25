@@ -36,6 +36,7 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:GetItem
         - dynamodb:Scan
+        - dynamodb:DeleteItem
       Resource: 
         - arn:aws:s3:::${self:provider.environment.bucketName}/*
         - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.tableName}
@@ -66,6 +67,22 @@ functions:
       - http:
           path: /ddb
           method: GET
+          cors: true
+
+  delete-item-db:
+    handler: lambdas/endpoints/delete-db.handler
+    events:
+      - http:
+          path: /ddb/{PK}
+          method: DELETE
+          cors: true
+
+  update-item-db:
+    handler: lambdas/endpoints/update-db.handler
+    events:
+      - http:
+          path: /ddb/{PK}
+          method: PUT
           cors: true
 
   writeS3:
