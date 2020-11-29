@@ -14,8 +14,8 @@ custom:
       migrate: true
     migration:
       dir: offline/migrations
-  serverless-offline:
-    httpPort: 3001
+  # serverless-offline:
+  #   httpPort: 3001
 
 provider:
   name: aws
@@ -29,8 +29,8 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action: 
-        - s3:PutObject
-        - s3:GetObject
+        # - s3:PutObject
+        # - s3:GetObject
         - dynamodb:Query
         - dynamodb:PutItem
         - dynamodb:UpdateItem
@@ -38,7 +38,7 @@ provider:
         - dynamodb:Scan
         - dynamodb:DeleteItem
       Resource: 
-        - arn:aws:s3:::${self:provider.environment.bucketName}/*
+        # - arn:aws:s3:::${self:provider.environment.bucketName}/*
         - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.tableName}
 plugins:
   - serverless-webpack

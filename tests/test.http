@@ -1,0 +1,16 @@
+
+##### Getting style
+GET http://localhost:3000/dev/s3/test.com
+
+# Writing S3
+
+### POST fake Online REST API
+POST http://localhost:3000/dev/s3/test.com
+Content-Type: application/json
+
+{
+    "style": "asddadsas",
+    "text": "monthly"
+}
+
+
