@@ -14,6 +14,10 @@ custom:
       migrate: true
     migration:
       dir: offline/migrations
+  s3:
+    host: localhost
+    directory: /tmp
+    port: 8005
   serverless-offline:
     httpPort: 3003
 
@@ -26,6 +30,7 @@ provider:
     tableName: ${self:custom.tableName}  
     bucketName: ${self:custom.bucketName}
     dynamoPort: ${self:custom.dynamodb.start.port}
+    S3Port: ${self:custom.s3.port}
   iamRoleStatements:
     - Effect: Allow
       Action: 
@@ -42,8 +47,8 @@ provider:
         - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.tableName}
 plugins:
   - serverless-offline
+  - serverless-s3-local
   - serverless-dynamodb-local
-
 package:
   individually: true
 
