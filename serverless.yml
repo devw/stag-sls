@@ -49,7 +49,7 @@ package:
 
 functions:
   ddb:
-    handler: lambdas/endpoints/ddb.handler
+    handler: lambdas/endpoints/ddb-endpoint.handler
     events:
       - http:
           path: ddb/{PK}
@@ -58,7 +58,7 @@ functions:
           integration: lambda
 
   s3:
-    handler: lambdas/endpoints/s3.handler
+    handler: lambdas/endpoints/s3-endpoint.handler
     events:
       - http:
           path: s3/{fName}
