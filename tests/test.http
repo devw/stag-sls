@@ -1,10 +1,42 @@
 @hostname = http://localhost:3003/dev
 
+#############################
+#########   DDB  ############
+#############################
+
+##### Reading Item from DDB
+GET {{hostname}}/ddb/test.com
+
+##### Adding Item to DDB
+POST {{hostname}}/ddb/test.com
+Content-Type: application/json
+
+{
+    "accessToken": "sha_asdasdasdsas",
+    "subscription": "monthly"
+}
+
+##### Updating Item to DDB
+PUT {{hostname}}/ddb/test.com
+Content-Type: application/json
+
+{
+    "paramName ": "subscription",
+    "paramValue": "annualy"
+}
+
+##### deleting Item to DDB
+DELETE {{hostname}}/ddb/test.com
+
+
+#############################
+#########  S3  ############
+#############################
+
 ##### Getting style
 GET {{hostname}}/s3/test.com
 
-# Writing S3
-### POST fake Online REST API
+### POST S3
 POST {{hostname}}/s3/test.com
 Content-Type: application/json
 
@@ -12,5 +44,6 @@ Content-Type: application/json
     "style": "asddadsas",
     "text": "monthly"
 }
+
 
 

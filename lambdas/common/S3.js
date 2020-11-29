@@ -1,6 +1,13 @@
 const AWS = require("aws-sdk");
 
-const s3Client = new AWS.S3();
+let options = {};
+if (process.env.IS_OFFLINE || process.env.JEST_WORKER_ID) {
+    console.log(process.env.IS_OFFLINE, process.env.JEST_WORKER_ID);
+    // options.endpoint = `http://localhost:${process.env.dynamoPort}`;
+    // options.region = "local-env";
+}
+
+const s3Client = new AWS.S3(options);
 
 const S3 = {
     async get(fileName, bucket) {
