@@ -9,13 +9,17 @@ custom:
     stages:
       - dev
     start:
-      port: 8000
+      port: 8003
       inMemory: true
       migrate: true
     migration:
       dir: offline/migrations
+  s3:
+    host: localhost
+    directory: /tmp
+    port: 8005
   serverless-offline:
-    httpPort: 3001
+    httpPort: 3003
 
 provider:
   name: aws
@@ -26,6 +30,7 @@ provider:
     tableName: ${self:custom.tableName}  
     bucketName: ${self:custom.bucketName}
     dynamoPort: ${self:custom.dynamodb.start.port}
+    S3Port: ${self:custom.s3.port}
   iamRoleStatements:
     - Effect: Allow
       Action: 
@@ -41,65 +46,30 @@ provider:
         - arn:aws:s3:::${self:provider.environment.bucketName}/*
         - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.tableName}
 plugins:
-  - serverless-webpack
   - serverless-offline
+  - serverless-s3-local
   - serverless-dynamodb-local
-
 package:
   individually: true
 
 functions:
-  write:
-    handler: lambdas/endpoints/write-db.handler
+  ddb:
+    handler: lambdas/endpoints/ddb-endpoint.handler
     events:
       - http:
-          path: /ddb/{PK}
-          method: POST
+          path: ddb/{PK}
+          method: any
           cors: true
+          integration: lambda
 
-  get:
-    handler: lambdas/endpoints/read-db.handler
-    events:
-      - http:
-          path: /ddb/{PK}
-          method: GET
-          cors: true
-      - http:
-          path: /ddb
-          method: GET
-          cors: true
-
-  delete-item-db:
-    handler: lambdas/endpoints/delete-db.handler
-    events:
-      - http:
-          path: /ddb/{PK}
-          method: DELETE
-          cors: true
-
-  update-item-db:
-    handler: lambdas/endpoints/update-db.handler
-    events:
-      - http:
-          path: /ddb/{PK}
-          method: PUT
-          cors: true
-
-  writeS3:
-    handler: lambdas/endpoints/write-s3.handler
+  s3:
+    handler: lambdas/endpoints/s3-endpoint.handler
     events:
       - http:
           path: s3/{fName}
-          method: POST
+          method: any
           cors: true
-
-  getS3:
-    handler: lambdas/endpoints/read-s3.handler
-    events:
-      - http:
-          path: s3/{fName}
-          method: GET
-          cors: true
+          integration: lambda
 
 resources:
   Resources:

@@ -1,6 +1,15 @@
 const AWS = require("aws-sdk");
+let options = {};
+if (process.env.IS_OFFLINE || process.env.JEST_WORKER_ID) {
+    options = {
+        s3ForcePathStyle: true,
+        accessKeyId: "S3RVER",
+        secretAccessKey: "S3RVER",
+        endpoint: new AWS.Endpoint(`http://localhost:${process.env.S3Port}`),
+    };
+}
 
-const s3Client = new AWS.S3();
+const s3Client = new AWS.S3(options);
 
 const S3 = {
     async get(fileName, bucket) {
